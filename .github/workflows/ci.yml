@@ -75,7 +75,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault/.ruby-version
+          ruby-version: my_gym_vault
           bundler-cache: true
 
       - name: Lint code for consistent style
@@ -109,7 +109,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault/.ruby-version
+          ruby-version: my_gym_vault
           bundler-cache: true
 
       - name: Setup Database
