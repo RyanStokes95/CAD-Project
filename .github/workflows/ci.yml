@@ -9,6 +9,7 @@ on:
 defaults:
   run:
     shell: bash
+    working-directory: my_gym_vault
 
 env:
   RAILS_ENV: test
@@ -27,7 +28,7 @@ jobs:
         id: set_ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: my_gym_vault/.ruby-version
           bundler-cache: true
 
   scan_ruby:
@@ -40,10 +41,11 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: my_gym_vault/.ruby-version
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities
+        working-directory: my_gym_vault
         run: bundle exec brakeman --no-pager
 
   scan_js:
@@ -56,10 +58,11 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: my_gym_vault/.ruby-version
           bundler-cache: true
 
       - name: Scan for JS dependency vulnerabilities
+        working-directory: my_gym_vault
         run: bundle exec importmap audit
 
   lint:
@@ -72,10 +75,11 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: my_gym_vault/.ruby-version
           bundler-cache: true
 
       - name: Lint code for consistent style
+        working-directory: my_gym_vault
         run: bundle exec rubocop -f github
 
   test:
@@ -95,17 +99,6 @@ jobs:
           --health-timeout=5s
           --health-retries=3
 
-      # Uncomment if Redis is required
-      # redis:
-      #   image: redis:7
-      #   ports:
-      #     - 6379:6379
-      #   options: >-
-      #     --health-cmd "redis-cli ping"
-      #     --health-interval 10s
-      #     --health-timeout 5s
-      #     --health-retries 5
-
     steps:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config google-chrome-stable
@@ -116,18 +109,19 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version
+          ruby-version: my_gym_vault/.ruby-version
           bundler-cache: true
 
       - name: Setup Database
+        working-directory: my_gym_vault
         run: |
           bin/rails db:setup
           bin/rails db:test:prepare
 
       - name: Run tests
+        working-directory: my_gym_vault
         env:
           DATABASE_URL: postgres://${{ secrets.PG_USERNAME }}:${{ secrets.PG_PASSWORD }}@localhost:5432/my_gym_vault_test
-          # REDIS_URL: redis://localhost:6379/0
         run: |
           bin/rails test
           bin/rails test:system
@@ -137,7 +131,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: screenshots
-          path: tmp/screenshots
+          path: my_gym_vault/tmp/screenshots
           if-no-files-found: ignore
 
       - name: Upload test logs
@@ -145,5 +139,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-logs
-          path: log/test.log
+          path: my_gym_vault/log/test.log
           if-no-files-found: ignore
