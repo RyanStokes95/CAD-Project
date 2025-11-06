@@ -1,16 +1,33 @@
-<p style="color: green"><%= notice %></p>
+<h1>My Exercises</h1>
 
-<% content_for :title, "Exercises" %>
+<p>
+  <%= link_to "New Exercise", new_exercise_path, class: "btn btn-success" %>
+</p>
 
-<h1>Exercises</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Weight (kg)</th>
+      <th>Sets</th>
+      <th>Reps</th>
+      <th></th>
+    </tr>
+  </thead>
 
-<div id="exercises">
-  <% @exercises.each do |exercise| %>
-    <%= render exercise %>
-    <p>
-      <%= link_to "Show this exercise", exercise %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New exercise", new_exercise_path %>
+  <tbody>
+    <% @exercises.each do |exercise| %>
+      <tr>
+        <td><%= exercise.name %></td>
+        <td><%= exercise.weight %></td>
+        <td><%= exercise.sets %></td>
+        <td><%= exercise.reps %></td>
+        <td>
+          <%= link_to "Show", exercise, class: "btn btn-info btn-sm" %>
+          <%= link_to "Edit", edit_exercise_path(exercise), class: "btn btn-warning btn-sm" %>
+          <%= link_to "Delete", exercise, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
