@@ -2,9 +2,9 @@
 
 one:
   name: MyString
-  weight: 1
-  sets: 1
-  reps: 1
+  weight: 100
+  sets: 10
+  reps: 3
   user: one
 
 two:

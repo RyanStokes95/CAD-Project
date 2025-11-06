@@ -1,7 +1,12 @@
 require "test_helper"
 
 class ExercisesControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
   setup do
+    #Test user is set to one, in fixtures
+    @user = users(:one)
+    sign_in @user
+    #Exercise is set to one in fixtures
     @exercise = exercises(:one)
   end
 
