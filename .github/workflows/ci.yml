@@ -15,19 +15,6 @@ env:
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
 jobs:
-  setup_ruby:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.4.5
-          bundler-cache: true
-          working-directory: my_gym_vault
-
   scan_ruby:
     runs-on: ubuntu-latest
     steps:
@@ -39,6 +26,7 @@ jobs:
         with:
           ruby-version: 3.4.5
           bundler-cache: true
+          working-directory: my_gym_vault
 
       - name: Scan for common Rails security vulnerabilities
         working-directory: my_gym_vault
@@ -55,6 +43,7 @@ jobs:
         with:
           ruby-version: 3.4.5
           bundler-cache: true
+          working-directory: my_gym_vault
 
       - name: Scan for JS dependency vulnerabilities
         working-directory: my_gym_vault
@@ -71,6 +60,7 @@ jobs:
         with:
           ruby-version: 3.4.5
           bundler-cache: true
+          working-directory: my_gym_vault
 
       - name: Lint code for consistent style
         working-directory: my_gym_vault
@@ -104,6 +94,7 @@ jobs:
         with:
           ruby-version: 3.4.5
           bundler-cache: true
+          working-directory: my_gym_vault
 
       - name: Setup Database
         working-directory: my_gym_vault
