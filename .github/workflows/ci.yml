@@ -28,7 +28,7 @@ jobs:
         id: set_ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault/.ruby-version
+          ruby-version: 3.4.5
           bundler-cache: true
 
   scan_ruby:
@@ -41,11 +41,10 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault/.ruby-version
+          ruby-version: 3.4.5
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities
-        working-directory: my_gym_vault
         run: bundle exec brakeman --no-pager
 
   scan_js:
@@ -58,11 +57,10 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault
+          ruby-version: 3.4.5
           bundler-cache: true
 
       - name: Scan for JS dependency vulnerabilities
-        working-directory: my_gym_vault
         run: bundle exec importmap audit
 
   lint:
@@ -75,11 +73,10 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault
+          ruby-version: 3.4.5
           bundler-cache: true
 
       - name: Lint code for consistent style
-        working-directory: my_gym_vault
         run: bundle exec rubocop -f github
 
   test:
@@ -109,17 +106,15 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault
+          ruby-version: 3.4.5
           bundler-cache: true
 
       - name: Setup Database
-        working-directory: my_gym_vault
         run: |
           bin/rails db:setup
           bin/rails db:test:prepare
 
       - name: Run tests
-        working-directory: my_gym_vault
         env:
           DATABASE_URL: postgres://${{ secrets.PG_USERNAME }}:${{ secrets.PG_PASSWORD }}@localhost:5432/my_gym_vault_test
         run: |
@@ -131,7 +126,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: screenshots
-          path: my_gym_vault/tmp/screenshots
+          path: tmp/screenshots
           if-no-files-found: ignore
 
       - name: Upload test logs
@@ -139,5 +134,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-logs
-          path: my_gym_vault/log/test.log
+          path: log/test.log
           if-no-files-found: ignore
