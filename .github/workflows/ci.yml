@@ -58,7 +58,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: my_gym_vault/.ruby-version
+          ruby-version: my_gym_vault
           bundler-cache: true
 
       - name: Scan for JS dependency vulnerabilities
